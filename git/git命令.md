@@ -66,3 +66,6 @@ git checkout其实是用版本库里的版本替换工作区的版本，无论�
 关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
 
 此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+
+要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
