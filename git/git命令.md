@@ -54,3 +54,9 @@ git checkout其实是用版本库里的版本替换工作区的版本，无论�
 第二种情况:删错文件了，不应该删test.txt，注意这时只执行了rm test.txt，还没        有提交，所以可以执行git checkout test.txt将文件恢复。
 
 并不是说执行完git commit -m "remove test.txt"后还能用checkout恢复，commit之后版本库里的文件也没了，自然没办法用checkout恢复，而是要用其他的办法
+
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
