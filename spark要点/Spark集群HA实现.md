@@ -24,3 +24,22 @@
 
     用于new master可以在任何时候创建，唯一需要担心的就是新的application和worker可以找到并注册到master，一旦注册就不用担心他们了
 
+
+
+    zookeeper HA 是实现生产环境HA的最佳方式，但是如果不想用zookeeper自动恢复，想要手动重启，就要用filesystem模式————当application和worker都注册到master之后，master会将信息写入指定的文件系统目录中，以便master重启时，可以从文件系统中恢复注册的应用程序和worker状态
+
+    配置：要启用这种filesystem HA模式，需要在spark-env.sh中设置SPARK_DAEMON_JAVA_OPTS:
+        1.spark.deploy.recoveryMode    filesystem
+        2.spark.deploy.recoveryDirectory    必须是master可访问的目录
+    通过stop-master.sh脚本杀掉一个master进程是不会清理它的恢复状态的，所以当你重启一个新的master进程时，它会进入恢复模式。
+
+    
+    
+    
+    
+spark web UI
+    每提交一个spark作业并且启动sparkContext之后，都会启动一个对应的spark web UI，默认情况下spark web UI的访问地址是driver进程所在节点的4040端口
+    如果一个节点上有多个driver，端口默认自增1
+
+    这些信息默认情况下仅仅在作业运行期间有效并且可以看到。一旦作业完毕，那么driver进程以及对应的web ui服务也会停止，我们就无法看到已经完成的作业的信息了。
+    如果要在作业完成之后，也可以看到其Spark Web UI以及详细信息，那么就需要启用Spark的History Server。
