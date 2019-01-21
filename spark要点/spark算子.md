@@ -40,4 +40,48 @@
     1.首先，先给自己每个值，加上一个value，变成一个tuple
     2.得到tuple组成的rdd后，进行reduceByKey
     3.将去重后的数据，从tuple还原为单值
-    
+
+
+5.cogroup算子
+    1.基础算子
+    2.在我们大量的实践中，很少遇到要用cogroup算子的情况
+    3.cogroup算子时其他很多算子的基础，比如join
+    cogroupedRDD是一个中间rdd，拿到的数据格式(hello,[(1,1),(1,1)])，同一个rdd构成一个value的集合，不同的rdd构成另一个集合
+    接下来把每一个集合转换为一个iterator格式的
+
+
+6.intersection算子（求交集）
+    1.把rdd内部的记录通过map变成tuple
+    2.进行cogroup
+    3.过滤掉有集合是空的的记录，有一个空的都不行
+    4.因为第一步用map变tuple的时候，给key加了null，这一步要把key还原为单值
+
+    1.map，tuple
+    2.cogroup，聚合两个rdd的key
+    3.fileter，过滤掉两个集合中任意一个集合为空的key
+    4.map，还原出单值key
+
+
+7.join算子
+    1.cogroup，聚合两个rdd的key
+    2.flatmap，聚合后的每条数据，都可能返回多条数据，将每个key对应的两个集合的所有元素，做一个笛卡尔积
+
+
+8.sortbykey算子
+    1.shuffledRDD，做shuffle read，将相同的key拉到一个partition中
+    2.mappartition 对每个partitions内的key进行全局排序
+
+9.cartesian算子
+
+10.coalesce算子
+    把一个rdd里的partition减少
+
+
+11.repartition算子
+    给每个partition的记录加一个递增的前缀，主要是做shuffle用
+    shuffledRDD，
+    coleascedrdd
+    再去前缀
+
+    1.map，附加前缀，根据要重分区为几个分区计算出前缀
+    2.去掉前缀，得到最终重分区好的rdd
